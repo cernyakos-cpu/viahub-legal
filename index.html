@@ -132,41 +132,12 @@
     pointer-events: none;
   }
 
-  .slide-inner {
+  .slide img,
+  .slide video {
+    width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-  }
-
-  .slide-inner .num {
-    font-family: 'Sora', sans-serif;
-    font-size: 34px;
-    font-weight: 800;
-    line-height: 1;
-  }
-
-  .slide-inner .label {
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    opacity: 0.9;
-  }
-
-  .slide-notch {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 54px;
-    height: 6px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.35);
+    object-fit: cover;
+    display: block;
   }
 
   .nav-btn {
@@ -300,23 +271,23 @@
     <button class="nav-btn next" aria-label="Next screenshot">&#8250;</button>
 
     <!--
-      Kepek helye: mindegyik ".slide" egy-egy "diapozitiv". Amikor
-      kesz screenshotjaid vannak az approl, csak cserold le a
-      ".slide-inner" tartalmat egy <img src="screenshots/1.png"
-      alt="..."> tag-re minden dianal (a "num"/"label" placeholder-t
-      torolheted).
+      Kepek/videok helye: mindegyik ".slide" egy-egy "diapozitiv".
+      Ha kesobb tovabbi vagy jobb screenshotod/videod lesz, csak
+      cserold le az img/video "src" attributumat egy ujabb fajlra
+      (a fajlok a "screenshots" mappaban vannak, akkor is, ha
+      kozottuk videok is vannak).
     -->
     <div class="carousel" id="carousel">
-      <div class="slide" style="background:linear-gradient(160deg,#4f7cff,#2f4fd6)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">1</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#38b6a4,#1f7f75)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">2</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#ff9a52,#e5622c)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">3</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#8a63f2,#5836c4)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">4</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#ef5da8,#c22f7c)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">5</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#3fb0e8,#1f7fc4)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">6</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#ffb648,#e88f1c)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">7</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#5ed4a3,#2ba279)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">8</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#7a86ff,#4652d6)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">9</div><div class="label">App preview</div></div></div>
-      <div class="slide" style="background:linear-gradient(160deg,#ff7676,#d63f4a)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">10</div><div class="label">App preview</div></div></div>
+      <div class="slide"><img src="screenshots/1.jpg" alt="ViaHub – Weather Forecast"></div>
+      <div class="slide"><img src="screenshots/2.jpg" alt="ViaHub – Accommodation"></div>
+      <div class="slide"><img src="screenshots/3.jpg" alt="ViaHub – Map"></div>
+      <div class="slide"><img src="screenshots/4.jpg" alt="ViaHub – Finances"></div>
+      <div class="slide"><img src="screenshots/5.jpg" alt="ViaHub – Travel Requirements"></div>
+      <div class="slide"><img src="screenshots/6.jpg" alt="ViaHub – Booked Excursions"></div>
+      <div class="slide"><img src="screenshots/7.jpg" alt="ViaHub – Useful Links"></div>
+      <div class="slide"><video src="screenshots/v1.mp4" autoplay muted loop playsinline></video></div>
+      <div class="slide"><video src="screenshots/v2.mp4" autoplay muted loop playsinline></video></div>
+      <div class="slide"><video src="screenshots/v3.mp4" autoplay muted loop playsinline></video></div>
     </div>
   </div>
 
