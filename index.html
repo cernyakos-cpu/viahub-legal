@@ -168,9 +168,23 @@
 
   /* ---------- Tagline ---------- */
 
+  .slide-caption {
+    max-width: 480px;
+    margin: 22px auto 0;
+    text-align: center;
+    font-size: 15.5px;
+    font-weight: 500;
+    color: var(--text);
+    min-height: 24px;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .slide-caption.fade { opacity: 0; }
+
   .tagline {
     max-width: 620px;
-    margin: 34px auto 0;
+    margin: 30px auto 0;
     text-align: center;
     font-size: 19px;
     line-height: 1.5;
@@ -278,18 +292,20 @@
       kozottuk videok is vannak).
     -->
     <div class="carousel" id="carousel">
-      <div class="slide"><video src="screenshots/v1.mp4" muted loop playsinline></video></div>
-      <div class="slide"><video src="screenshots/v2.mp4" muted loop playsinline></video></div>
-      <div class="slide"><video src="screenshots/v3.mp4" muted loop playsinline></video></div>
-      <div class="slide"><img src="screenshots/1.jpg" alt="ViaHub – Weather Forecast"></div>
-      <div class="slide"><img src="screenshots/2.jpg" alt="ViaHub – Accommodation"></div>
-      <div class="slide"><img src="screenshots/3.jpg" alt="ViaHub – Map"></div>
-      <div class="slide"><img src="screenshots/4.jpg" alt="ViaHub – Finances"></div>
-      <div class="slide"><img src="screenshots/5.jpg" alt="ViaHub – Travel Requirements"></div>
-      <div class="slide"><img src="screenshots/6.jpg" alt="ViaHub – Booked Excursions"></div>
-      <div class="slide"><img src="screenshots/7.jpg" alt="ViaHub – Useful Links"></div>
+      <div class="slide" data-caption="Build your entire itinerary in minutes."><video src="screenshots/v1.mp4" muted loop playsinline></video></div>
+      <div class="slide" data-caption="Keep every part of your trip organized in one place."><video src="screenshots/v2.mp4" muted loop playsinline></video></div>
+      <div class="slide" data-caption="Invite your travel companions and plan together."><video src="screenshots/v3.mp4" muted loop playsinline></video></div>
+      <div class="slide" data-caption="Check the weather forecast at every stop of your trip."><img src="screenshots/1.jpg" alt="ViaHub – Weather Forecast"></div>
+      <div class="slide" data-caption="Keep every hotel and stay booking in one place."><img src="screenshots/2.jpg" alt="ViaHub – Accommodation"></div>
+      <div class="slide" data-caption="See your whole trip laid out on the map."><img src="screenshots/3.jpg" alt="ViaHub – Map"></div>
+      <div class="slide" data-caption="Manage your finances together and split costs with your travel companions."><img src="screenshots/4.jpg" alt="ViaHub – Finances"></div>
+      <div class="slide" data-caption="Stay on top of visas, documents, and travel requirements."><img src="screenshots/5.jpg" alt="ViaHub – Travel Requirements"></div>
+      <div class="slide" data-caption="Keep all your booked excursions and activities together."><img src="screenshots/6.jpg" alt="ViaHub – Booked Excursions"></div>
+      <div class="slide" data-caption="Save useful links and info for every destination."><img src="screenshots/7.jpg" alt="ViaHub – Useful Links"></div>
     </div>
   </div>
+
+  <p class="slide-caption" id="slideCaption"></p>
 
   <p class="tagline"><strong>ViaHub</strong> is the all-in-one trip planner that organizes your itinerary, stays, expenses, and travel companions in one place.</p>
 </section>
@@ -343,6 +359,22 @@
     var slides = Array.prototype.slice.call(carousel.querySelectorAll('.slide'));
     var prevBtn = document.querySelector('.nav-btn.prev');
     var nextBtn = document.querySelector('.nav-btn.next');
+    var captionEl = document.getElementById('slideCaption');
+    var currentCaptionSlide = null;
+
+    // Akos kerese: "az eppen aktualis kep vagy video alatt jelenjen meg
+    // egy mondat" - az aktiv (kozeppontra legkozelebbi) dia
+    // "data-caption" szovege jelenik meg alatta, halvany atmenettel.
+    function updateCaption(activeSlide) {
+      if (activeSlide === currentCaptionSlide) return;
+      currentCaptionSlide = activeSlide;
+      var text = activeSlide ? activeSlide.getAttribute('data-caption') || '' : '';
+      captionEl.classList.add('fade');
+      window.setTimeout(function () {
+        captionEl.textContent = text;
+        captionEl.classList.remove('fade');
+      }, 150);
+    }
 
     // Akos kerese: "csak akkor induljon el a video ha az van a fo
     // kepen, ha az epp a hatterben van akkor ne mozogjon" - a kozeppontra
@@ -376,6 +408,8 @@
           video.currentTime = 0;
         }
       });
+
+      updateCaption(activeSlide);
     }
 
     function closestSlide() {
