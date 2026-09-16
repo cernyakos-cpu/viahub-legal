@@ -278,6 +278,9 @@
       kozottuk videok is vannak).
     -->
     <div class="carousel" id="carousel">
+      <div class="slide"><video src="screenshots/v1.mp4" muted loop playsinline></video></div>
+      <div class="slide"><video src="screenshots/v2.mp4" muted loop playsinline></video></div>
+      <div class="slide"><video src="screenshots/v3.mp4" muted loop playsinline></video></div>
       <div class="slide"><img src="screenshots/1.jpg" alt="ViaHub – Weather Forecast"></div>
       <div class="slide"><img src="screenshots/2.jpg" alt="ViaHub – Accommodation"></div>
       <div class="slide"><img src="screenshots/3.jpg" alt="ViaHub – Map"></div>
@@ -285,9 +288,6 @@
       <div class="slide"><img src="screenshots/5.jpg" alt="ViaHub – Travel Requirements"></div>
       <div class="slide"><img src="screenshots/6.jpg" alt="ViaHub – Booked Excursions"></div>
       <div class="slide"><img src="screenshots/7.jpg" alt="ViaHub – Useful Links"></div>
-      <div class="slide"><video src="screenshots/v1.mp4" autoplay muted loop playsinline></video></div>
-      <div class="slide"><video src="screenshots/v2.mp4" autoplay muted loop playsinline></video></div>
-      <div class="slide"><video src="screenshots/v3.mp4" autoplay muted loop playsinline></video></div>
     </div>
   </div>
 
@@ -344,17 +344,37 @@
     var prevBtn = document.querySelector('.nav-btn.prev');
     var nextBtn = document.querySelector('.nav-btn.next');
 
+    // Akos kerese: "csak akkor induljon el a video ha az van a fo
+    // kepen, ha az epp a hatterben van akkor ne mozogjon" - a kozeppontra
+    // legkozelebbi ("aktiv") dia videoja jatszik, minden mas dia
+    // videoja szuneteltetve marad.
     function updateSlides() {
       var rect = carousel.getBoundingClientRect();
       var center = rect.left + rect.width / 2;
+      var minDist = Infinity;
+      var activeSlide = null;
+
       slides.forEach(function (slide) {
         var r = slide.getBoundingClientRect();
         var slideCenter = r.left + r.width / 2;
-        var dist = Math.min(Math.abs(center - slideCenter) / (rect.width / 2), 1);
+        var rawDist = Math.abs(center - slideCenter);
+        var dist = Math.min(rawDist / (rect.width / 2), 1);
         var scale = 1 - dist * 0.22;
         var opacity = 1 - dist * 0.62;
         slide.style.transform = 'scale(' + scale + ')';
         slide.style.opacity = opacity;
+        if (rawDist < minDist) { minDist = rawDist; activeSlide = slide; }
+      });
+
+      slides.forEach(function (slide) {
+        var video = slide.querySelector('video');
+        if (!video) return;
+        if (slide === activeSlide) {
+          if (video.paused) { video.play().catch(function () {}); }
+        } else if (!video.paused) {
+          video.pause();
+          video.currentTime = 0;
+        }
       });
     }
 
