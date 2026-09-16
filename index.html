@@ -4,29 +4,450 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ViaHub</title>
-<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --text: #14172b;
+    --muted: #5b6178;
+    --accent: #408cff;
+    --accent-dark: #2f6fe0;
+    --accent-soft: rgba(64, 140, 255, 0.10);
+    --border: rgba(20, 23, 43, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Sora', 'Inter', sans-serif;
+    margin: 0;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Top nav ---------- */
+
+  .top-nav {
+    display: flex;
+    align-items: center;
+    padding: 24px 0;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .brand .mark {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  .brand .mark svg { width: 15px; height: 15px; }
+
+  .top-nav .links {
+    margin-left: auto;
+    display: flex;
+    gap: 28px;
+  }
+
+  .top-nav .links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .top-nav .links a:hover { color: var(--text); }
+
+  /* ---------- Hero ---------- */
+
+  .hero {
+    padding: 28px 0 8px;
+  }
+
+  /* ---------- Carousel ---------- */
+
+  .carousel-shell {
+    position: relative;
+  }
+
+  .carousel {
+    display: flex;
+    gap: 22px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 30px calc(50% - 108px);
+    cursor: grab;
+    user-select: none;
+    scrollbar-width: none;
+  }
+
+  .carousel.dragging { cursor: grabbing; scroll-snap-type: none; }
+  .carousel::-webkit-scrollbar { display: none; }
+
+  .slide {
+    flex: 0 0 auto;
+    width: 216px;
+    aspect-ratio: 9 / 19.5;
+    scroll-snap-align: center;
+    border-radius: 30px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 45px -20px rgba(20, 23, 43, 0.35);
+    overflow: hidden;
+    transform: scale(0.8);
+    opacity: 0.4;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .slide-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .slide-inner .num {
+    font-family: 'Sora', sans-serif;
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .slide-inner .label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    opacity: 0.9;
+  }
+
+  .slide-notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 54px;
+    height: 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px -10px rgba(20, 23, 43, 0.3);
+    z-index: 2;
+  }
+
+  .nav-btn:hover { background: var(--accent-soft); }
+  .nav-btn.prev { left: 4px; }
+  .nav-btn.next { right: 4px; }
+
+  @media (max-width: 640px) {
+    .nav-btn { display: none; }
+  }
+
+  /* ---------- Tagline ---------- */
+
+  .tagline {
+    max-width: 620px;
+    margin: 34px auto 0;
+    text-align: center;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .tagline strong { color: var(--text); }
+
+  /* ---------- Features ---------- */
+
+  .features {
+    padding: 56px 0 90px;
+  }
+
+  .features h2 {
+    text-align: center;
+    font-size: 27px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 860px) {
+    .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 480px) {
+    .feature-grid { grid-template-columns: 1fr; }
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px 20px;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .feature-icon svg { width: 20px; height: 20px; }
+
+  .feature-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .feature-card p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  footer {
+    text-align: center;
+    padding: 0 0 40px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+</style>
 </head>
 <body>
+
 <div class="wrap">
   <nav class="top-nav">
-    <a class="brand" href="index.html">ViaHub</a>
+    <a class="brand" href="index.html">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 16.5 21 4l-4.5 15-4-6-6.5-4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </span>
+      ViaHub
+    </a>
     <div class="links">
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Service</a>
     </div>
   </nav>
-
-  <h1>ViaHub</h1>
-  <p class="updated">Trip planning, simplified.</p>
-
-  <section>
-    <p>ViaHub is a trip-planning app for organizing itineraries, accommodation, expenses, and travel companions in one place.</p>
-    <p><a href="privacy.html">Read our Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="terms.html">Read our Terms of Service</a></p>
-  </section>
-
-  <footer>
-    &copy; 2026 ViaHub. All rights reserved.
-  </footer>
 </div>
+
+<section class="hero">
+  <div class="carousel-shell">
+    <button class="nav-btn prev" aria-label="Previous screenshot">&#8249;</button>
+    <button class="nav-btn next" aria-label="Next screenshot">&#8250;</button>
+
+    <!--
+      Kepek helye: mindegyik ".slide" egy-egy "diapozitiv". Amikor
+      kesz screenshotjaid vannak az approl, csak cserold le a
+      ".slide-inner" tartalmat egy <img src="screenshots/1.png"
+      alt="..."> tag-re minden dianal (a "num"/"label" placeholder-t
+      torolheted).
+    -->
+    <div class="carousel" id="carousel">
+      <div class="slide" style="background:linear-gradient(160deg,#4f7cff,#2f4fd6)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">1</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#38b6a4,#1f7f75)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">2</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#ff9a52,#e5622c)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">3</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#8a63f2,#5836c4)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">4</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#ef5da8,#c22f7c)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">5</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#3fb0e8,#1f7fc4)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">6</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#ffb648,#e88f1c)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">7</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#5ed4a3,#2ba279)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">8</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#7a86ff,#4652d6)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">9</div><div class="label">App preview</div></div></div>
+      <div class="slide" style="background:linear-gradient(160deg,#ff7676,#d63f4a)"><span class="slide-notch"></span><div class="slide-inner"><div class="num">10</div><div class="label">App preview</div></div></div>
+    </div>
+  </div>
+
+  <p class="tagline"><strong>ViaHub</strong> is the all-in-one trip planner that organizes your itinerary, stays, expenses, and travel companions in one place.</p>
+</section>
+
+<section class="features">
+  <div class="wrap">
+    <h2>ViaHub plans everything for you</h2>
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Itinerary Builder</h3>
+        <p>Build a day-by-day plan for every trip, including flights, layovers, and transport.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3.5" y="3.5" width="17" height="17" rx="4" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17" stroke="currentColor" stroke-width="1.8"/></svg>
+        </div>
+        <h3>Everything in One Place</h3>
+        <p>Accommodation, excursions, notes, and documents together for each trip.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v9M9.5 15c0 1.1 1.1 2 2.5 2s2.5-.9 2.5-2-1.1-1.6-2.5-2-2.5-.9-2.5-2 1.1-2 2.5-2 2.5.9 2.5 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Finances</h3>
+        <p>Track expenses and automatically split costs with your travel companions.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3 4 6.5v6c0 4.4 3.3 8 8 8.5 4.7-.5 8-4.1 8-8.5v-6L12 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Trip Info</h3>
+        <p>Weather forecasts, travel requirements, and useful links, always at hand.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>&copy; 2026 ViaHub. All rights reserved.</footer>
+
+<script>
+  (function () {
+    var carousel = document.getElementById('carousel');
+    var slides = Array.prototype.slice.call(carousel.querySelectorAll('.slide'));
+    var prevBtn = document.querySelector('.nav-btn.prev');
+    var nextBtn = document.querySelector('.nav-btn.next');
+
+    function updateSlides() {
+      var rect = carousel.getBoundingClientRect();
+      var center = rect.left + rect.width / 2;
+      slides.forEach(function (slide) {
+        var r = slide.getBoundingClientRect();
+        var slideCenter = r.left + r.width / 2;
+        var dist = Math.min(Math.abs(center - slideCenter) / (rect.width / 2), 1);
+        var scale = 1 - dist * 0.22;
+        var opacity = 1 - dist * 0.62;
+        slide.style.transform = 'scale(' + scale + ')';
+        slide.style.opacity = opacity;
+      });
+    }
+
+    function closestSlide() {
+      var rect = carousel.getBoundingClientRect();
+      var center = rect.left + rect.width / 2;
+      var closest = slides[0];
+      var closestDist = Infinity;
+      slides.forEach(function (slide) {
+        var r = slide.getBoundingClientRect();
+        var slideCenter = r.left + r.width / 2;
+        var dist = Math.abs(center - slideCenter);
+        if (dist < closestDist) { closestDist = dist; closest = slide; }
+      });
+      return closest;
+    }
+
+    var ticking = false;
+    carousel.addEventListener('scroll', function () {
+      if (!ticking) {
+        window.requestAnimationFrame(function () { updateSlides(); ticking = false; });
+        ticking = true;
+      }
+    });
+    window.addEventListener('resize', updateSlides);
+
+    // Mouse click-and-drag support (touch/trackpad already scroll natively).
+    var isDown = false, startX = 0, startScroll = 0;
+    carousel.addEventListener('pointerdown', function (e) {
+      isDown = true;
+      carousel.classList.add('dragging');
+      startX = e.clientX;
+      startScroll = carousel.scrollLeft;
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!isDown) return;
+      carousel.scrollLeft = startScroll - (e.clientX - startX);
+    });
+    function endDrag() {
+      if (!isDown) return;
+      isDown = false;
+      carousel.classList.remove('dragging');
+      closestSlide().scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+    window.addEventListener('pointerup', endDrag);
+    window.addEventListener('pointercancel', endDrag);
+
+    prevBtn.addEventListener('click', function () {
+      var idx = slides.indexOf(closestSlide());
+      var target = slides[Math.max(0, idx - 1)];
+      target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+    nextBtn.addEventListener('click', function () {
+      var idx = slides.indexOf(closestSlide());
+      var target = slides[Math.min(slides.length - 1, idx + 1)];
+      target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+
+    updateSlides();
+    // Kozepre igazitas induláskor (elso dia).
+    slides[0].scrollIntoView({ inline: 'center', block: 'nearest' });
+    updateSlides();
+  })();
+</script>
+
 </body>
 </html>
