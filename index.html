@@ -404,11 +404,20 @@
         var r = slide.getBoundingClientRect();
         var slideCenter = r.left + r.width / 2;
         var rawDist = Math.abs(center - slideCenter);
-        var dist = Math.min(rawDist / (rect.width / 2), 1);
-        var scale = 1 - dist * 0.22;
-        var opacity = 1 - dist * 0.62;
-        slide.style.transform = 'scale(' + scale + ')';
+        var signedDist = (slideCenter - center) / (rect.width / 2);
+        var dist = Math.min(Math.abs(signedDist), 1);
+        // Akos kerese: "a kepeknek legyen nagyobb terhatasa, az aktualis
+        // legyen kicsit nagyobb, a mellette levo kisebb es a tavolabbiak
+        // meg kisebbek mintha egy korben lapoznek" - az aktiv dia a
+        // nyugalmi (0.8) meretnel is nagyobbra no (1.08), a tavolabbiak
+        // pedig annal is kisebbre zsugorodnak (0.6), plusz egy enyhe
+        // 3D (rotateY) dontes adja a "korben lapozas" erzetet.
+        var scale = 1.08 - dist * 0.48;
+        var opacity = 1 - dist * 0.72;
+        var rotateY = -signedDist * 26;
+        slide.style.transform = 'perspective(1000px) rotateY(' + rotateY + 'deg) scale(' + scale + ')';
         slide.style.opacity = opacity;
+        slide.style.zIndex = String(Math.round((1 - dist) * 100));
         if (rawDist < minDist) { minDist = rawDist; activeSlide = slide; }
       });
 
