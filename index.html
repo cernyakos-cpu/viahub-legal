@@ -46,7 +46,9 @@
 
   .top-nav {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    row-gap: 10px;
     padding: 24px 0;
   }
 
@@ -54,6 +56,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
+    margin-right: 18px;
     font-family: 'Sora', sans-serif;
     font-weight: 700;
     font-size: 19px;
@@ -169,15 +173,25 @@
   /* ---------- Tagline ---------- */
 
   .slide-caption {
-    max-width: 480px;
-    margin: 22px auto 0;
+    display: block;
+    width: fit-content;
+    max-width: calc(100% - 48px);
+    margin: 16px auto 0;
+    padding: 11px 24px;
+    border-radius: 999px;
+    background: var(--accent-soft);
     text-align: center;
-    font-size: 15.5px;
-    font-weight: 500;
-    color: var(--text);
-    min-height: 24px;
+    font-size: 17px;
+    line-height: 1.35;
+    font-weight: 700;
+    color: var(--accent-dark);
+    min-height: 20px;
     opacity: 1;
     transition: opacity 0.2s ease;
+  }
+
+  @media (max-width: 480px) {
+    .slide-caption { font-size: 15.5px; padding: 10px 18px; }
   }
 
   .slide-caption.fade { opacity: 0; }
