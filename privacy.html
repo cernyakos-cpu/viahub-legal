@@ -36,12 +36,14 @@ Travel companion information: if you invite someone to a trip, we store the name
 
 Support requests: if you contact us through the in-app Help form, we collect the topic, message, and any screenshots you choose to attach, together with your email address so we can reply.
 
+Push notification data: if you enable notifications, we store your device&rsquo;s push token (and platform, e.g. iOS) so we can send you trip-related alerts; this is removed when you sign out or turn notifications off.
+
 We do not knowingly collect any special-category data (such as health, religious, or biometric information) through the app.</p>
   </section>
 
   <section>
     <h2>3. How we use your information</h2>
-    <p>We use your information to: create and secure your account; let you plan, view, and share trips; calculate and display cost splits and balances between you and your travel companions; send you emails you request or that are necessary for the service (account confirmation, password reset, trip invitations, Email Extract reports, support replies); generate weather forecasts for your trip dates and locations; power the optional AI trip-planning assistant when you choose to use it; and respond to support requests.</p>
+    <p>We use your information to: create and secure your account; let you plan, view, and share trips; calculate and display cost splits and balances between you and your travel companions; send you emails you request or that are necessary for the service (account confirmation, password reset, trip invitations, Email Extract reports, support replies); generate weather forecasts for your trip dates and locations; send you optional push notifications about upcoming trip events (such as check-in reminders or gate status changes), if you enable them; power the optional AI trip-planning assistant when you choose to use it; and respond to support requests.</p>
   </section>
 
   <section>
@@ -58,7 +60,7 @@ We do not knowingly collect any special-category data (such as health, religious
     <h2>6. Third parties who process data on our behalf</h2>
     <p>We use a small number of service providers (&#8220;processors&#8221;) to run ViaHub. They only receive the data needed to perform their specific function, and are not permitted to use it for their own purposes:
 
-&bull; Supabase &ndash; hosts our database, handles account authentication, and stores uploaded profile photos.
+&bull; Supabase &ndash; hosts our database (including your push notification token, if enabled), handles account authentication, and stores uploaded profile photos.
 &bull; Resend &ndash; delivers the transactional emails ViaHub sends (confirmations, invitations, reports, support replies).
 &bull; Google (Gemini API) &ndash; only if you use the optional AI trip assistant: the question you type is sent to Google to generate a response. Nothing is sent to Google unless you actively use this feature.
 &bull; Open-Meteo &ndash; receives only the location and dates needed to fetch a weather forecast for your trip; no account or personal data is sent.
