@@ -359,7 +359,8 @@
       kozottuk videok is vannak).
     -->
     <div class="carousel" id="carousel">
-      <div class="slide" data-caption="Build your entire itinerary in minutes."><video src="screenshots/v1.mp4" muted loop playsinline></video></div>
+      <div class="slide" data-caption="Track all your flights and departures in real time."><video src="screenshots/v4.mp4" muted loop playsinline></video></div>
+      <div class="slide" data-caption="Discover top attractions and local food for every destination."><video src="screenshots/v5.mp4" muted loop playsinline></video></div>
       <div class="slide" data-caption="Keep every part of your trip organized in one place."><video src="screenshots/v2.mp4" muted loop playsinline></video></div>
       <div class="slide" data-caption="Invite your travel companions and plan together."><video src="screenshots/v3.mp4" muted loop playsinline></video></div>
       <div class="slide" data-caption="Check the weather forecast at every stop of your trip."><img src="screenshots/1.jpg" alt="ViaHub – Weather Forecast"></div>
@@ -441,15 +442,29 @@
 <script>
   (function () {
     var carousel = document.getElementById('carousel');
-    var slides = Array.prototype.slice.call(carousel.querySelectorAll('.slide'));
+    var realSlides = Array.prototype.slice.call(carousel.querySelectorAll('.slide'));
     var prevBtn = document.querySelector('.nav-btn.prev');
     var nextBtn = document.querySelector('.nav-btn.next');
     var captionEl = document.getElementById('slideCaption');
     var currentCaptionSlide = null;
 
-    // Akos kerese: "az eppen aktualis kep vagy video alatt jelenjen meg
-    // egy mondat" - az aktiv (kozeppontra legkozelebbi) dia
-    // "data-caption" szovege jelenik meg alatta, halvany atmenettel.
+    // Akos kerese: "a kepek lapozasa ne ugy legyen hogy az elsotol az
+    // utolsoig hanem vegtelen mintha korbe lapoznek, ha elertem az
+    // utolsohoz kovetkezzen megint az elso" - ehhez az elso es az utolso
+    // dia egy-egy masolatat ("clone") tesszuk a lista ele/moge. Amikor a
+    // felhasznalo egy ilyen masolatra lapoz (barmelyik szelen), a lapozas
+    // (scroll) leallta utan - a felhasznalo szamara lathatatlanul, animacio
+    // nelkul - visszaugrunk a masolat "valodi" parjara a lista masik
+    // vegen, igy a lapozas vegtelennek tunik.
+    var firstClone = realSlides[realSlides.length - 1].cloneNode(true);
+    var lastClone = realSlides[0].cloneNode(true);
+    firstClone.setAttribute('data-clone-of', 'last');
+    lastClone.setAttribute('data-clone-of', 'first');
+    carousel.insertBefore(firstClone, realSlides[0]);
+    carousel.appendChild(lastClone);
+
+    var slides = Array.prototype.slice.call(carousel.querySelectorAll('.slide'));
+
     function updateCaption(activeSlide) {
       if (activeSlide === currentCaptionSlide) return;
       currentCaptionSlide = activeSlide;
@@ -504,6 +519,7 @@
       });
 
       updateCaption(activeSlide);
+      return activeSlide;
     }
 
     function closestSlide() {
@@ -520,12 +536,28 @@
       return closest;
     }
 
+    // A vegtelen lapozas "varazslata": ha a lapozas (scroll) megallt egy
+    // masolat-dian, azonnal (animacio nelkul) atugrunk a valodi parjara a
+    // lista masik vegen - a felhasznalo ezt nem veszi eszre, mert a
+    // masolat es a valodi dia pixelre ugyanaz.
+    function settleOnRealSlide() {
+      var active = closestSlide();
+      var cloneOf = active.getAttribute('data-clone-of');
+      if (!cloneOf) return;
+      var real = cloneOf === 'first' ? realSlides[0] : realSlides[realSlides.length - 1];
+      real.scrollIntoView({ inline: 'center', block: 'nearest' });
+      updateSlides();
+    }
+
     var ticking = false;
+    var settleTimer = null;
     carousel.addEventListener('scroll', function () {
       if (!ticking) {
         window.requestAnimationFrame(function () { updateSlides(); ticking = false; });
         ticking = true;
       }
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(settleOnRealSlide, 120);
     });
     window.addEventListener('resize', updateSlides);
 
@@ -552,18 +584,17 @@
 
     prevBtn.addEventListener('click', function () {
       var idx = slides.indexOf(closestSlide());
-      var target = slides[Math.max(0, idx - 1)];
+      var target = slides[idx - 1 < 0 ? slides.length - 1 : idx - 1];
       target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     });
     nextBtn.addEventListener('click', function () {
       var idx = slides.indexOf(closestSlide());
-      var target = slides[Math.min(slides.length - 1, idx + 1)];
+      var target = slides[(idx + 1) % slides.length];
       target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     });
 
-    updateSlides();
-    // Kozepre igazitas induláskor (elso dia).
-    slides[0].scrollIntoView({ inline: 'center', block: 'nearest' });
+    // Kozepre igazitas induláskor (elso valodi dia, animacio nelkul).
+    realSlides[0].scrollIntoView({ inline: 'center', block: 'nearest' });
     updateSlides();
   })();
 </script>
