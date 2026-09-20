@@ -109,33 +109,40 @@
     position: relative;
   }
 
-  .carousel {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 30px calc(50% - 130px);
+  .carousel-viewport {
+    position: relative;
+    height: 593px;
+    overflow: hidden;
+    perspective: 1400px;
     cursor: grab;
     user-select: none;
-    scrollbar-width: none;
   }
 
-  .carousel.dragging { cursor: grabbing; scroll-snap-type: none; }
-  .carousel::-webkit-scrollbar { display: none; }
+  .carousel-viewport.dragging { cursor: grabbing; }
+
+  .carousel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
 
   .slide {
-    flex: 0 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 260px;
     aspect-ratio: 700 / 1434;
-    scroll-snap-align: center;
     border-radius: 30px;
     background: var(--surface);
     border: 1px solid var(--border);
     box-shadow: 0 20px 45px -20px rgba(20, 23, 43, 0.35);
     overflow: hidden;
-    transform: scale(0.8);
-    opacity: 0.4;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     pointer-events: none;
     will-change: transform, opacity;
   }
@@ -163,7 +170,7 @@
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 8px 20px -10px rgba(20, 23, 43, 0.3);
-    z-index: 2;
+    z-index: 20;
   }
 
   .nav-btn:hover { background: var(--accent-soft); }
@@ -173,7 +180,7 @@
   @media (max-width: 640px) {
     .nav-btn { display: none; }
 
-    .carousel { padding: 24px calc(50% - 100px); }
+    .carousel-viewport { height: 458px; }
     .slide { width: 200px; }
   }
 
@@ -352,12 +359,14 @@
     <button class="nav-btn next" aria-label="Next screenshot">&#8250;</button>
 
     <!--
-      Kepek/videok helye: mindegyik ".slide" egy-egy "diapozitiv".
-      Ha kesobb tovabbi vagy jobb screenshotod/videod lesz, csak
-      cserold le az img/video "src" attributumat egy ujabb fajlra
-      (a fajlok a "screenshots" mappaban vannak, akkor is, ha
-      kozottuk videok is vannak).
+      Kepek/videok helye: mindegyik ".slide" egy-egy "diapozitiv", amik egy
+      kepzeletbeli henger palastjan allnak korben (3D henger-forgas). Ha
+      kesobb tovabbi vagy jobb screenshotod/videod lesz, csak cserold le az
+      img/video "src" attributumat egy ujabb fajlra (a fajlok a
+      "screenshots" mappaban vannak, akkor is, ha kozottuk videok is
+      vannak).
     -->
+    <div class="carousel-viewport" id="carouselViewport">
     <div class="carousel" id="carousel">
       <div class="slide" data-caption="Track all your flights and departures in real time."><video src="screenshots/v4.mp4" muted loop playsinline></video></div>
       <div class="slide" data-caption="Discover top attractions and local food for every destination."><video src="screenshots/v5.mp4" muted loop playsinline></video></div>
@@ -370,6 +379,7 @@
       <div class="slide" data-caption="Stay on top of visas, documents, and travel requirements."><img src="screenshots/5.jpg" alt="ViaHub – Travel Requirements"></div>
       <div class="slide" data-caption="Keep all your booked excursions and activities together."><img src="screenshots/6.jpg" alt="ViaHub – Booked Excursions"></div>
       <div class="slide" data-caption="Save useful links and info for every destination."><img src="screenshots/7.jpg" alt="ViaHub – Useful Links"></div>
+    </div>
     </div>
   </div>
 
@@ -441,29 +451,39 @@
 
 <script>
   (function () {
-    var carousel = document.getElementById('carousel');
-    var realSlides = Array.prototype.slice.call(carousel.querySelectorAll('.slide'));
+    var viewport = document.getElementById('carouselViewport');
+    var stage = document.getElementById('carousel');
+    var slides = Array.prototype.slice.call(stage.querySelectorAll('.slide'));
     var prevBtn = document.querySelector('.nav-btn.prev');
     var nextBtn = document.querySelector('.nav-btn.next');
     var captionEl = document.getElementById('slideCaption');
     var currentCaptionSlide = null;
 
-    // Akos kerese: "a kepek lapozasa ne ugy legyen hogy az elsotol az
-    // utolsoig hanem vegtelen mintha korbe lapoznek, ha elertem az
-    // utolsohoz kovetkezzen megint az elso" - ehhez az elso es az utolso
-    // dia egy-egy masolatat ("clone") tesszuk a lista ele/moge. Amikor a
-    // felhasznalo egy ilyen masolatra lapoz (barmelyik szelen), a lapozas
-    // (scroll) leallta utan - a felhasznalo szamara lathatatlanul, animacio
-    // nelkul - visszaugrunk a masolat "valodi" parjara a lista masik
-    // vegen, igy a lapozas vegtelennek tunik.
-    var firstClone = realSlides[realSlides.length - 1].cloneNode(true);
-    var lastClone = realSlides[0].cloneNode(true);
-    firstClone.setAttribute('data-clone-of', 'last');
-    lastClone.setAttribute('data-clone-of', 'first');
-    carousel.insertBefore(firstClone, realSlides[0]);
-    carousel.appendChild(lastClone);
+    var N = slides.length;
+    var step = 360 / N;
+    var rotation = 0;
+    var radius = 0;
+    var TRANSITION = 'transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1)';
 
-    var slides = Array.prototype.slice.call(carousel.querySelectorAll('.slide'));
+    // Akos kerese: "olyan mintha egy hengert vagy diat forgatnek, ha a
+    // vegere ertem akkor jon egybol az elso" - minden dia fix szogben all
+    // egy kepzeletbeli henger palastjan (360 fok / diak szama), es csak a
+    // henger (a "stage") forog egyben. Igy nincs szukseg masolatokra
+    // ("clone") vagy nema visszaugrasra: a forgas sima es folyamatos,
+    // termeszetesen er vissza az utolsotol az elsore, nincs pillanatnyi
+    // "ures" allapot lapozas kozben.
+    function computeGeometry() {
+      var w = slides[0].getBoundingClientRect().width;
+      radius = (w / 2) / Math.tan(Math.PI / N) * 1.35;
+      viewport.style.perspective = Math.round(radius * 2.6) + 'px';
+    }
+
+    function normalizeAngle(deg) {
+      var a = deg % 360;
+      if (a > 180) a -= 360;
+      if (a < -180) a += 360;
+      return a;
+    }
 
     function updateCaption(activeSlide) {
       if (activeSlide === currentCaptionSlide) return;
@@ -476,35 +496,23 @@
       }, 150);
     }
 
-    // Akos kerese: "csak akkor induljon el a video ha az van a fo
-    // kepen, ha az epp a hatterben van akkor ne mozogjon" - a kozeppontra
-    // legkozelebbi ("aktiv") dia videoja jatszik, minden mas dia
-    // videoja szuneteltetve marad.
-    function updateSlides() {
-      var rect = carousel.getBoundingClientRect();
-      var center = rect.left + rect.width / 2;
+    // Akos kerese: "csak akkor induljon el a video ha az van a fo kepen"
+    // - a henger "eleje" fele nezo (a kameraval szemben allo) dia videoja
+    // jatszik, minden mas dia videoja szuneteltetve marad.
+    function render() {
       var minDist = Infinity;
       var activeSlide = null;
 
-      slides.forEach(function (slide) {
-        var r = slide.getBoundingClientRect();
-        var slideCenter = r.left + r.width / 2;
-        var rawDist = Math.abs(center - slideCenter);
-        var signedDist = (slideCenter - center) / (rect.width / 2);
-        var dist = Math.min(Math.abs(signedDist), 1);
-        // Akos kerese: "a kepeknek legyen nagyobb terhatasa, az aktualis
-        // legyen kicsit nagyobb, a mellette levo kisebb es a tavolabbiak
-        // meg kisebbek mintha egy korben lapoznek" - az aktiv dia a
-        // nyugalmi (0.8) meretnel is nagyobbra no (1.08), a tavolabbiak
-        // pedig annal is kisebbre zsugorodnak (0.6), plusz egy enyhe
-        // 3D (rotateY) dontes adja a "korben lapozas" erzetet.
+      slides.forEach(function (slide, i) {
+        var angle = normalizeAngle(rotation + i * step);
+        var dist = Math.min(Math.abs(angle) / 90, 1);
         var scale = 1.08 - dist * 0.48;
-        var opacity = 1 - dist * 0.72;
-        var rotateY = -signedDist * 26;
-        slide.style.transform = 'perspective(1000px) rotateY(' + rotateY + 'deg) scale(' + scale + ')';
-        slide.style.opacity = opacity;
+        var opacity = Math.max(0, 1 - dist * 0.9);
+        slide.style.transform =
+          'translate(-50%, -50%) rotateY(' + (i * step) + 'deg) translateZ(' + radius + 'px) scale(' + scale + ')';
+        slide.style.opacity = String(opacity);
         slide.style.zIndex = String(Math.round((1 - dist) * 100));
-        if (rawDist < minDist) { minDist = rawDist; activeSlide = slide; }
+        if (Math.abs(angle) < minDist) { minDist = Math.abs(angle); activeSlide = slide; }
       });
 
       slides.forEach(function (slide) {
@@ -519,83 +527,72 @@
       });
 
       updateCaption(activeSlide);
-      return activeSlide;
     }
 
-    function closestSlide() {
-      var rect = carousel.getBoundingClientRect();
-      var center = rect.left + rect.width / 2;
-      var closest = slides[0];
-      var closestDist = Infinity;
-      slides.forEach(function (slide) {
-        var r = slide.getBoundingClientRect();
-        var slideCenter = r.left + r.width / 2;
-        var dist = Math.abs(center - slideCenter);
-        if (dist < closestDist) { closestDist = dist; closest = slide; }
-      });
-      return closest;
+    function setStageTransform(withTransition) {
+      stage.style.transition = withTransition ? TRANSITION : 'none';
+      stage.style.transform = 'rotateY(' + rotation + 'deg)';
     }
 
-    // A vegtelen lapozas "varazslata": ha a lapozas (scroll) megallt egy
-    // masolat-dian, azonnal (animacio nelkul) atugrunk a valodi parjara a
-    // lista masik vegen - a felhasznalo ezt nem veszi eszre, mert a
-    // masolat es a valodi dia pixelre ugyanaz.
-    function settleOnRealSlide() {
-      var active = closestSlide();
-      var cloneOf = active.getAttribute('data-clone-of');
-      if (!cloneOf) return;
-      var real = cloneOf === 'first' ? realSlides[0] : realSlides[realSlides.length - 1];
-      real.scrollIntoView({ inline: 'center', block: 'nearest' });
-      updateSlides();
-    }
-
-    var ticking = false;
     var settleTimer = null;
-    carousel.addEventListener('scroll', function () {
-      if (!ticking) {
-        window.requestAnimationFrame(function () { updateSlides(); ticking = false; });
-        ticking = true;
-      }
+    function goTo(targetRotation) {
+      rotation = targetRotation;
+      setStageTransform(true);
+      render();
       window.clearTimeout(settleTimer);
-      settleTimer = window.setTimeout(settleOnRealSlide, 120);
-    });
-    window.addEventListener('resize', updateSlides);
+      settleTimer = window.setTimeout(function () {
+        // A szoget "normalizaljuk" (pl. 390 fok -> 30 fok), hogy a szam ne
+        // nojon vegtelensegig - vizualisan nincs kulonbseg (a henger
+        // pontosan ugyanugy all), ezert atmenet (animacio) nelkul, egy
+        // pillanat alatt tesszuk meg, a felhasznalo szamara eszrevehetetlenul.
+        rotation = normalizeAngle(rotation);
+        setStageTransform(false);
+        render();
+      }, 520);
+    }
 
-    // Mouse click-and-drag support (touch/trackpad already scroll natively).
-    var isDown = false, startX = 0, startScroll = 0;
-    carousel.addEventListener('pointerdown', function (e) {
+    prevBtn.addEventListener('click', function () { goTo(rotation + step); });
+    nextBtn.addEventListener('click', function () { goTo(rotation - step); });
+
+    // Eger/erintes-huzas: a henger forgatasa a vizszintes elmozdulassal
+    // aranyos (iv-hossz = sugar * szog), hogy a huzas erzete fizikailag is
+    // egy henger forgatasahoz hasonlitson.
+    var isDown = false, startX = 0, startRotation = 0;
+    viewport.addEventListener('pointerdown', function (e) {
       isDown = true;
-      carousel.classList.add('dragging');
+      viewport.classList.add('dragging');
       startX = e.clientX;
-      startScroll = carousel.scrollLeft;
+      startRotation = rotation;
+      window.clearTimeout(settleTimer);
+      stage.style.transition = 'none';
     });
     window.addEventListener('pointermove', function (e) {
       if (!isDown) return;
-      carousel.scrollLeft = startScroll - (e.clientX - startX);
+      var deltaPixels = startX - e.clientX;
+      var deltaDeg = (deltaPixels / radius) * (180 / Math.PI);
+      rotation = startRotation - deltaDeg;
+      setStageTransform(false);
+      render();
     });
     function endDrag() {
       if (!isDown) return;
       isDown = false;
-      carousel.classList.remove('dragging');
-      closestSlide().scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      viewport.classList.remove('dragging');
+      goTo(Math.round(rotation / step) * step);
     }
     window.addEventListener('pointerup', endDrag);
     window.addEventListener('pointercancel', endDrag);
 
-    prevBtn.addEventListener('click', function () {
-      var idx = slides.indexOf(closestSlide());
-      var target = slides[idx - 1 < 0 ? slides.length - 1 : idx - 1];
-      target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    });
-    nextBtn.addEventListener('click', function () {
-      var idx = slides.indexOf(closestSlide());
-      var target = slides[(idx + 1) % slides.length];
-      target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    window.addEventListener('resize', function () {
+      computeGeometry();
+      setStageTransform(false);
+      render();
     });
 
-    // Kozepre igazitas induláskor (elso valodi dia, animacio nelkul).
-    realSlides[0].scrollIntoView({ inline: 'center', block: 'nearest' });
-    updateSlides();
+    // Kezdeti allapot: elso dia elol, henger meretezese.
+    computeGeometry();
+    setStageTransform(false);
+    render();
   })();
 </script>
 
