@@ -275,6 +275,33 @@
     color: var(--muted);
   }
 
+  /* ---------- QR code (csak asztali gepen jelenik meg) ---------- */
+
+  .qr-wrap {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0 0;
+  }
+
+  .qr-wrap img {
+    width: 132px;
+    height: 132px;
+    border-radius: 12px;
+    background: #fff;
+    display: block;
+  }
+
+  .qr-wrap span {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .qr-wrap { display: flex; }
+  }
+
   /* ---------- App Store badge ---------- */
 
   .store-badge-wrap {
@@ -390,6 +417,12 @@
         <strong>App Store</strong>
       </span>
     </a>
+  </div>
+
+  <!-- QR kod: telefonnal beolvasva megnyitja az appot az App Store-ban -->
+  <div class="qr-wrap">
+    <img src="qr-appstore.svg" alt="QR code to download ViaHub on the App Store" width="132" height="132">
+    <span>Scan with your iPhone camera to open ViaHub in the App Store</span>
   </div>
 </section>
 
