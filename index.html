@@ -442,7 +442,15 @@
 
   .hero-title span { color: var(--accent-dark); }
 
+  /* Akos kerese: "a csempek teljes felulete legyen kattinthato" - a cim
+     linkje egy lathatatlan reteggel (::after) az egesz csempet lefedi,
+     igy a kepre vagy a szovegre kattintva is megnyilik az aloldal. */
+  .feature-card { position: relative; cursor: pointer; }
   .feature-card h3 a { color: inherit; text-decoration: none; }
+  .feature-card h3 a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: 18px; }
+  .feature-card h3 a:focus-visible::after { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .feature-card .more { position: relative; z-index: 2; }
+  .feature-card:hover h3 a { color: var(--accent-dark); }
   .feature-card h3 a:hover { color: var(--accent-dark); }
 
   .feature-card .more {
