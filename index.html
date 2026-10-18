@@ -3,7 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ViaHub</title>
+<title>ViaHub – AI Trip Planner &amp; Travel Itinerary App for iPhone</title>
+<meta name="description" content="Plan trips with AI: things to do, a cost estimate and a day-by-day itinerary in minutes. Keep flights, stays, expenses and companions in one free iPhone app.">
+<link rel="canonical" href="https://viahubapp.com/">
+<meta name="apple-itunes-app" content="app-id=6813871718">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ViaHub">
+<meta property="og:title" content="ViaHub – AI Trip Planner &amp; Travel Itinerary App">
+<meta property="og:description" content="Plan trips with AI, keep your whole itinerary in one place and split costs with your travel companions.">
+<meta property="og:url" content="https://viahubapp.com/">
+<meta property="og:image" content="https://viahubapp.com/features/ai-planner.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "ViaHub",
+  "description": "All-in-one trip planner with an AI trip planner, day-by-day itinerary, cost estimates, expense splitting, travel checklist and route logging.",
+  "operatingSystem": "iOS 26.5 or later",
+  "applicationCategory": "TravelApplication",
+  "url": "https://viahubapp.com/",
+  "downloadUrl": "https://apps.apple.com/app/id6813871718",
+  "image": "https://viahubapp.com/logo.png",
+  "offers": {
+   "@type": "Offer",
+   "price": "0",
+   "priceCurrency": "USD"
+  }
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "ViaHub",
+  "url": "https://viahubapp.com/"
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ViaHub",
+  "url": "https://viahubapp.com/",
+  "logo": "https://viahubapp.com/logo.png",
+  "sameAs": [
+   "https://apps.apple.com/app/id6813871718",
+   "https://www.instagram.com/viahubapp/"
+  ]
+ }
+]
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -377,11 +426,65 @@
     font-family: 'Sora', sans-serif;
   }
 
-  footer {
+  .hero-title {
+    max-width: 760px;
+    margin: 6px auto 0;
+    padding: 0 24px;
     text-align: center;
+    font-size: clamp(26px, 4.6vw, 40px);
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-title span { color: var(--accent-dark); }
+
+  .feature-card .more {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    text-decoration: none;
+  }
+
+  .feature-card .more:hover { text-decoration: underline; }
+
+  footer {
     padding: 0 0 40px;
     color: var(--muted);
     font-size: 13px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    padding: 36px 0 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-grid h4 {
+    margin: 0 0 10px;
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .footer-grid a {
+    display: block;
+    padding: 3px 0;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13.5px;
+  }
+
+  .footer-grid a:hover { color: var(--text); }
+
+  .copyright { text-align: center; }
+
+  @media (max-width: 640px) {
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
@@ -389,20 +492,23 @@
 
 <div class="wrap">
   <nav class="top-nav">
-    <a class="brand" href="index.html">
+    <a class="brand" href="/">
       <span class="mark">
         <img src="logo.png" alt="ViaHub logo">
       </span>
       ViaHub
     </a>
     <div class="links">
+      <a href="ai-trip-planner.html">AI Trip Planner</a>
+      <a href="best-travel-itinerary-apps.html">Guides</a>
       <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms of Service</a>
     </div>
   </nav>
 </div>
 
 <section class="hero">
+  <h1 class="hero-title">AI trip planner &amp; travel itinerary app <span>for iPhone</span></h1>
+
   <div class="carousel-shell">
     <button class="nav-btn prev" aria-label="Previous screenshot">&#8249;</button>
     <button class="nav-btn next" aria-label="Next screenshot">&#8250;</button>
@@ -455,7 +561,7 @@
   </div>
 </section>
 
-<section class="features">
+<section class="features" id="features">
   <div class="wrap">
     <h2>ViaHub plans everything for you</h2>
     <p class="features-lead">From the first idea to the way home: plan with AI, travel together and keep every detail of your trip in one place.</p>
@@ -466,6 +572,7 @@
         <div class="feature-body">
           <h3>AI Trip Planner</h3>
           <p>Tell the AI where and when you want to go, even with flexible dates, and get ideas for things to do, a cost estimate and a day-by-day plan.</p>
+          <a class="more" href="ai-trip-planner.html">Learn more &rarr;</a>
         </div>
       </div>
 
@@ -514,6 +621,7 @@
         <div class="feature-body">
           <h3>Finances</h3>
           <p>Track expenses and automatically split costs with your travel companions.</p>
+          <a class="more" href="group-trip-expense-splitter.html">Learn more &rarr;</a>
         </div>
       </div>
 
@@ -522,6 +630,7 @@
         <div class="feature-body">
           <h3>Travel Checklist</h3>
           <p>Visa, insurance and vaccination requirements for your nationality, plus useful links.</p>
+          <a class="more" href="travel-checklist.html">Learn more &rarr;</a>
         </div>
       </div>
 
@@ -538,6 +647,7 @@
         <div class="feature-body">
           <h3>Planned & Logged Routes</h3>
           <p>Plan your route, then log the real one and see the distance you travelled each day.</p>
+          <a class="more" href="travel-route-tracker.html">Learn more &rarr;</a>
         </div>
       </div>
 
@@ -570,6 +680,7 @@
         <div class="feature-body">
           <h3>Travel Companions</h3>
           <p>Invite friends to your trips, share the plan and split every cost fairly.</p>
+          <a class="more" href="group-trip-expense-splitter.html">Learn more &rarr;</a>
         </div>
       </div>
 
@@ -577,7 +688,37 @@
   </div>
 </section>
 
-<footer>&copy; 2026 ViaHub. All rights reserved.</footer>
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>Features</h4>
+        <a href="ai-trip-planner.html">AI Trip Planner</a>
+        <a href="group-trip-expense-splitter.html">Group Trips &amp; Expense Splitting</a>
+        <a href="travel-checklist.html">Travel Checklist</a>
+        <a href="travel-route-tracker.html">Route Tracker</a>
+      </div>
+      <div>
+        <h4>Guides</h4>
+        <a href="best-travel-itinerary-apps.html">Best Travel Itinerary Apps</a>
+        <a href="oslo-copenhagen-itinerary.html">Oslo &amp; Copenhagen in 6 Days</a>
+      </div>
+      <div>
+        <h4>Compare</h4>
+        <a href="viahub-vs-tripit.html">ViaHub vs TripIt</a>
+        <a href="viahub-vs-wanderlog.html">ViaHub vs Wanderlog</a>
+      </div>
+      <div>
+        <h4>ViaHub</h4>
+        <a href="https://apps.apple.com/app/id6813871718" target="_blank" rel="noopener">Download on the App Store</a>
+        <a href="https://www.instagram.com/viahubapp/" target="_blank" rel="noopener">Instagram</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2026 ViaHub. All rights reserved.</p>
+  </div>
+</footer>
 
 <script>
   (function () {
