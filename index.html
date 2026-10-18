@@ -439,6 +439,9 @@
 
   .hero-title span { color: var(--accent-dark); }
 
+  .feature-card h3 a { color: inherit; text-decoration: none; }
+  .feature-card h3 a:hover { color: var(--accent-dark); }
+
   .feature-card .more {
     display: inline-block;
     margin-top: 10px;
@@ -458,7 +461,7 @@
 
   .footer-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 24px;
     padding: 36px 0 28px;
     border-top: 1px solid var(--border);
@@ -563,123 +566,132 @@
 
 <section class="features" id="features">
   <div class="wrap">
-    <h2>ViaHub plans everything for you</h2>
-    <p class="features-lead">From the first idea to the way home: plan with AI, travel together and keep every detail of your trip in one place.</p>
+    <h2>Everything you need to plan a trip, in one travel app</h2>
+    <p class="features-lead">From the first idea to the way home: plan your itinerary with AI, estimate the trip budget, travel together and keep every booking, expense and checklist in one place.</p>
     <div class="feature-grid">
 
       <div class="feature-card wide">
-        <div class="feature-media"><img src="features/ai-planner.jpg" alt="Eiffel Tower at sunset" loading="lazy"></div>
+        <div class="feature-media"><img src="features/ai-planner.jpg" alt="Eiffel Tower at sunset, a trip planned with the ViaHub AI trip planner" loading="lazy"></div>
         <div class="feature-body">
-          <h3>AI Trip Planner</h3>
-          <p>Tell the AI where and when you want to go, even with flexible dates, and get ideas for things to do, a cost estimate and a day-by-day plan.</p>
+          <h3><a href="ai-trip-planner.html">AI Trip Planner</a></h3>
+          <p>Tell the AI trip planner where and when you want to go, even with flexible dates. Get things to do, a trip cost estimate and a day-by-day itinerary in minutes, for one city or a multi-city trip.</p>
           <a class="more" href="ai-trip-planner.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/day-plan.jpg" alt="Hand writing in a travel planner" loading="lazy"></div>
+        <div class="feature-media"><img src="features/day-plan.jpg" alt="Hand writing a day-by-day travel itinerary in a planner" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Day-by-Day Plan</h3>
-          <p>Drag activities onto the days, add rest days and let the planner place the rest.</p>
+          <h3><a href="day-by-day-itinerary-planner.html">Day-by-Day Itinerary</a></h3>
+          <p>Drag activity tiles onto the days of your itinerary, add rest days and beach days, and let the planner place the rest.</p>
+          <a class="more" href="day-by-day-itinerary-planner.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/cost-estimate.jpg" alt="Resort with a pool at sunset" loading="lazy"></div>
+        <div class="feature-media"><img src="features/cost-estimate.jpg" alt="Resort with a pool at sunset, included in a trip cost estimate" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Cost Estimate</h3>
-          <p>Flights, stays, food and transport estimated for your whole group, with options you can compare.</p>
+          <h3><a href="trip-cost-estimator.html">Trip Cost Estimate</a></h3>
+          <p>Flights, accommodation, food and transport estimated for your whole group, sorted by price, so you can set a travel budget before you book.</p>
+          <a class="more" href="trip-cost-estimator.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/trip-hub.jpg" alt="Map, camera and backpack laid out for a trip" loading="lazy"></div>
+        <div class="feature-media"><img src="features/trip-hub.jpg" alt="Map, camera and backpack laid out while organising a trip" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Everything in One Place</h3>
-          <p>Timeline, accommodation, map, finances and more, together for each trip.</p>
+          <h3><a href="trip-organizer-app.html">Everything in One Place</a></h3>
+          <p>An all-in-one trip organizer: timeline, accommodation, map, finances, checklist and weather together for each trip.</p>
+          <a class="more" href="trip-organizer-app.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card wide">
-        <div class="feature-media"><img src="features/timeline.jpg" alt="Airplane wing above the clouds at sunset" loading="lazy"></div>
+        <div class="feature-media"><img src="features/timeline.jpg" alt="Airplane wing above the clouds at sunset on the way to a trip" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Travel Timeline</h3>
-          <p>Every flight, stay and excursion on one timeline, from the first leg to the way home.</p>
+          <h3><a href="travel-timeline.html">Travel Timeline</a></h3>
+          <p>Every flight, stay and excursion on one travel timeline, from the first leg to the way home. Missing legs are highlighted, so nothing falls through the cracks.</p>
+          <a class="more" href="travel-timeline.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/transport.jpg" alt="Driver at the wheel at dusk" loading="lazy"></div>
+        <div class="feature-media"><img src="features/transport.jpg" alt="Driver at the wheel of a rental car at dusk" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Local Transport</h3>
-          <p>Choose taxi, rental car or public transport and watch the estimate update.</p>
+          <h3><a href="local-transport-planner.html">Local Transport</a></h3>
+          <p>Compare public transport, taxi and rental car options for every destination and watch your trip budget update.</p>
+          <a class="more" href="local-transport-planner.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/finances.jpg" alt="Laptop on a desk" loading="lazy"></div>
+        <div class="feature-media"><img src="features/finances.jpg" alt="Laptop on a desk used to track travel expenses" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Finances</h3>
-          <p>Track expenses and automatically split costs with your travel companions.</p>
+          <h3><a href="group-trip-expense-splitter.html">Travel Expenses</a></h3>
+          <p>Track travel expenses by category, compare them with your planned costs and split costs automatically with your travel companions.</p>
           <a class="more" href="group-trip-expense-splitter.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/checklist.jpg" alt="Traveller with a backpack in an old town street" loading="lazy"></div>
+        <div class="feature-media"><img src="features/checklist.jpg" alt="Traveller with a backpack walking down an old town street" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Travel Checklist</h3>
-          <p>Visa, insurance and vaccination requirements for your nationality, plus useful links.</p>
+          <h3><a href="travel-checklist.html">Travel Checklist</a></h3>
+          <p>Visa, travel insurance and vaccination requirements for your nationality, document expiry reminders and a packing list.</p>
           <a class="more" href="travel-checklist.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/weather.jpg" alt="Sun setting over mountains" loading="lazy"></div>
+        <div class="feature-media"><img src="features/weather.jpg" alt="Sun setting over mountains at a travel destination" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Weather Outlook</h3>
-          <p>Know what to pack with an AI weather outlook for every stop.</p>
+          <h3><a href="travel-weather-forecast.html">Weather Forecast</a></h3>
+          <p>An AI weather outlook while you plan and the forecast for every stop, so you know what to pack.</p>
+          <a class="more" href="travel-weather-forecast.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/routes.jpg" alt="Wooden world map" loading="lazy"></div>
+        <div class="feature-media"><img src="features/routes.jpg" alt="Wooden world map for planning travel routes" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Planned & Logged Routes</h3>
-          <p>Plan your route, then log the real one and see the distance you travelled each day.</p>
+          <h3><a href="travel-route-tracker.html">Planned &amp; Logged Routes</a></h3>
+          <p>See your planned route on the map, then log the real one during the trip and check the distance you travelled each day. Private and battery-friendly.</p>
           <a class="more" href="travel-route-tracker.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/attractions.jpg" alt="Camel caravan near the pyramids at sunset" loading="lazy"></div>
+        <div class="feature-media"><img src="features/attractions.jpg" alt="Camel caravan near the pyramids at sunset, a top attraction" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Top Attractions</h3>
-          <p>Discover top attractions and typical food at your destination.</p>
+          <h3><a href="things-to-do-and-local-food.html">Things to Do &amp; Local Food</a></h3>
+          <p>Discover top attractions and typical local food at every destination, on a map, and add them to your trip plan.</p>
+          <a class="more" href="things-to-do-and-local-food.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
         <div class="feature-media"><img src="features/statistics.jpg" alt="Earth at night seen from space" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Travel Statistics</h3>
-          <p>Distance, countries visited and your journey to the Moon.</p>
+          <h3><a href="travel-statistics.html">Travel Statistics</a></h3>
+          <p>Distance travelled, countries visited and your journey to the Moon, built up trip after trip.</p>
+          <a class="more" href="travel-statistics.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/departures.jpg" alt="City skyline at sunrise" loading="lazy"></div>
+        <div class="feature-media"><img src="features/departures.jpg" alt="City skyline at sunrise before a departure" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Departures Board</h3>
-          <p>See all your trips on a departures board, with a calendar of everything coming up.</p>
+          <h3><a href="trip-departures-board.html">Departures Board</a></h3>
+          <p>All your upcoming trips on a live departures board, with a trip calendar and a map of every journey.</p>
+          <a class="more" href="trip-departures-board.html">Learn more &rarr;</a>
         </div>
       </div>
 
       <div class="feature-card">
-        <div class="feature-media"><img src="features/companions.jpg" alt="Hiker walking into a green valley" loading="lazy"></div>
+        <div class="feature-media"><img src="features/companions.jpg" alt="Hiker walking into a green valley with travel companions" loading="lazy"></div>
         <div class="feature-body">
-          <h3>Travel Companions</h3>
-          <p>Invite friends to your trips, share the plan and split every cost fairly.</p>
+          <h3><a href="group-trip-expense-splitter.html">Travel Companions</a></h3>
+          <p>Plan group trips together: invite friends and family, share the itinerary and split every cost fairly.</p>
           <a class="more" href="group-trip-expense-splitter.html">Learn more &rarr;</a>
         </div>
       </div>
@@ -692,19 +704,31 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <h4>Features</h4>
+        <h4>Plan</h4>
         <a href="ai-trip-planner.html">AI Trip Planner</a>
-        <a href="group-trip-expense-splitter.html">Group Trips &amp; Expense Splitting</a>
+        <a href="day-by-day-itinerary-planner.html">Day-by-Day Itinerary Planner</a>
+        <a href="trip-cost-estimator.html">Trip Cost Estimator</a>
+        <a href="local-transport-planner.html">Local Transport Planner</a>
+        <a href="things-to-do-and-local-food.html">Things to Do &amp; Local Food</a>
+      </div>
+      <div>
+        <h4>Organise</h4>
+        <a href="trip-organizer-app.html">Trip Organizer</a>
+        <a href="travel-timeline.html">Travel Timeline</a>
+        <a href="trip-departures-board.html">Departures Board &amp; Trip Calendar</a>
         <a href="travel-checklist.html">Travel Checklist</a>
+        <a href="travel-weather-forecast.html">Travel Weather Forecast</a>
+      </div>
+      <div>
+        <h4>Travel together</h4>
+        <a href="group-trip-expense-splitter.html">Group Trips &amp; Expense Splitting</a>
         <a href="travel-route-tracker.html">Route Tracker</a>
+        <a href="travel-statistics.html">Travel Statistics</a>
       </div>
       <div>
         <h4>Guides</h4>
         <a href="best-travel-itinerary-apps.html">Best Travel Itinerary Apps</a>
         <a href="oslo-copenhagen-itinerary.html">Oslo &amp; Copenhagen in 6 Days</a>
-      </div>
-      <div>
-        <h4>Compare</h4>
         <a href="viahub-vs-tripit.html">ViaHub vs TripIt</a>
         <a href="viahub-vs-wanderlog.html">ViaHub vs Wanderlog</a>
       </div>
